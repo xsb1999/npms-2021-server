@@ -1,0 +1,35 @@
+server:
+  port: 14000
+spring:
+  application:
+    name: gateway-server
+  #下面是关于Spring Cloud Gateway的配置
+  cloud:
+    gateway:
+      routes:
+        - id: providerServer1
+          uri: lb://provider-server-customer-management   # 客户管理服务
+          predicates:
+            - Path=/cusManagement/**
+          filters:                    #在路由中添加Hystrix配置
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/fallback
+        - id: providerServer2
+          uri: lb://provider-server-opportunity-management   # 机会管理服务
+          predicates:
+            - Path=/oppManagement/**
+          filters:                    #在路由中添加Hystrix配置
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/fallback
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eurekaServer13000:13000/eureka/, http://eurekaServer13001:13001/eureka/, http://eurekaServer13002:13002/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
