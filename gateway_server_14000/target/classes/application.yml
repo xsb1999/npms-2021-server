@@ -3,28 +3,43 @@ server:
 spring:
   application:
     name: gateway-server
+  redis:
+    port: 6379
+    host: 123.56.170.249
+    database: 0
+    password: 123456
   #下面是关于Spring Cloud Gateway的配置
   cloud:
     gateway:
       routes:
+        - id: oauth2-api
+          uri: lb://oauth2-api
+          predicates:
+            - Path=/api/**
+          filters:
+            - StripPrefix=1
+
+        - id: oauth2-auth
+          uri: lb://oauth2-auth
+          predicates:
+            - Path=/oauth/**
+          filters:
+            - StripPrefix=1
+
         - id: providerServer1
           uri: lb://provider-server-customer-management   # 客户管理服务
           predicates:
             - Path=/cusManagement/**
-          filters:                    #在路由中添加Hystrix配置
-            - name: Hystrix
-              args:
-                name: fallbackcmd
-                fallbackUri: forward:/fallback
+          filters:
+            - StripPrefix=1
+
         - id: providerServer2
           uri: lb://provider-server-opportunity-management   # 机会管理服务
           predicates:
             - Path=/oppManagement/**
-          filters:                    #在路由中添加Hystrix配置
-            - name: Hystrix
-              args:
-                name: fallbackcmd
-                fallbackUri: forward:/fallback
+          filters:
+            - StripPrefix=1
+
 
 eureka:
   client:

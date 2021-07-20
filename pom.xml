@@ -12,6 +12,8 @@
         <module>eureka_server_13001</module>
         <module>eureka_server_13002</module>
         <module>gateway_server_14000</module>
+        <module>oauth2-auth_15000</module>
+        <module>oauth2-api_16000</module>
     </modules>
 
     <packaging>pom</packaging>
