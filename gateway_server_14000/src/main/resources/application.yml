@@ -7,6 +7,21 @@ spring:
   #下面是关于Spring Cloud Gateway的配置
   cloud:
     gateway:
+
+#      discovery:
+#      # 跨域
+#      globalcors:
+#        corsConfigurations:
+#          '[/**]':
+#            allowedHeaders: "*"
+#            allowedOrigins: "*"
+#            allowedMethods:
+#            - GET
+#              POST
+#              DELETE
+#              PUT
+#              OPTION
+
       routes:
         - id: oauth2-api
           uri: lb://oauth2-api
@@ -40,7 +55,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://eurekaServer13000:13000/eureka/, http://eurekaServer13001:13001/eureka/, http://eurekaServer13002:13002/eureka/
+      defaultZone: http://127.0.0.1:13000/eureka/, http://127.0.0.1:13001/eureka/, http://127.0.0.1:13002/eureka/
   instance:
     prefer-ip-address: true
     instance-id: ${spring.cloud.client.ip-address}:${server.port}
