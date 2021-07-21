@@ -1,5 +1,7 @@
 package com.xu.config;
 
+import com.xu.service.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +22,9 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    UserServiceImpl userService;
 
     /**
      * 安全拦截机制
@@ -85,11 +90,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     protected UserDetailsService userDetailsService() {
-        // 测试方便采用内存存取方式
-        InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
-        userDetailsService.createUser(User.withUsername("user_1").password(passwordEncoder().encode("123456")).roles("user").build());
-        userDetailsService.createUser(User.withUsername("user_2").password(passwordEncoder().encode("1234567")).roles("admin").build());
-        userDetailsService.createUser(User.withUsername("user_3").password(passwordEncoder().encode("12345678")).roles("user").build());
+        // 从数据库中获取所有用户名，密码，roles
+        InMemoryUserDetailsManager userDetailsService = userService.getAllUsers();
         return userDetailsService;
     }
 

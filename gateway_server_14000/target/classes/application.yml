@@ -3,11 +3,7 @@ server:
 spring:
   application:
     name: gateway-server
-  redis:
-    port: 6379
-    host: 123.56.170.249
-    database: 0
-    password: 123456
+
   #下面是关于Spring Cloud Gateway的配置
   cloud:
     gateway:
@@ -22,7 +18,7 @@ spring:
         - id: oauth2-auth
           uri: lb://oauth2-auth
           predicates:
-            - Path=/oauth/**
+            - Path=/auth/**
           filters:
             - StripPrefix=1
 
